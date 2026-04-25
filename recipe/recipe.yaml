@@ -1,0 +1,51 @@
+schema_version: 1
+
+context:
+  name: parallelbar
+  version: "2.5"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/parallelbar-${{ version }}.tar.gz
+  sha256: 0922b090384dc798108a8e936a8a9e08fdaa6dadc1ccf1178ff66f9dac09465e
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - setuptools
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - tqdm
+    - colorama
+
+tests:
+  - python:
+      imports:
+        - parallelbar
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: Parallel processing with progress bars
+  description: |
+    Parallelbar displays the progress of tasks in the process pool for Pool class methods such as map,
+    starmap (since 1.2 version), imap and imap_unordered.
+    Parallelbar is based on the tqdm module and the standard python multiprocessing library.
+    Also, it is possible to handle exceptions that occur within a separate process,
+    as well as set a timeout for the execution of a task by a process.
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/dubovikmaster/parallelbar
+
+extra:
+  recipe-maintainers:
+    - eunos-1128
